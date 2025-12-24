@@ -25,7 +25,7 @@ const testimonials = [
     nameBn: 'রাকিব হাসান',
     role: 'SSC Student',
     roleBn: 'এসএসসি শিক্ষার্থী',
-    content: 'Best coaching center I\'ve ever been to. The flexible schedule allowed me to balance my studies with other activities perfectly.',
+    content: 'Best coaching center I have ever been to. The flexible schedule allowed me to balance my studies with other activities perfectly.',
     contentBn: 'আমি যেখানে গিয়েছি সেখানে সেরা কোচিং সেন্টার। নমনীয় সময়সূচী আমাকে আমার পড়াশোনা অন্যান্য ক্রিয়াকলাপের সাথে নিখুঁতভাবে ভারসাম্য রাখতে দিয়েছে।',
     rating: 5,
     image: '/images/student-2.jpg',

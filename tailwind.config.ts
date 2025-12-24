@@ -51,6 +51,7 @@ const config: Config = {
         sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
         serif: ['var(--font-playfair)', 'Georgia', 'serif'],
         display: ['var(--font-display)', 'cursive'],
+        bengali: ['var(--font-bengali)', '"Noto Sans Bengali"', '"Mukta"', 'sans-serif'],
       },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-in-out',

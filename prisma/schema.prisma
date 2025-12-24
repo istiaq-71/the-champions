@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
@@ -36,6 +36,25 @@ enum CourseType {
   HYBRID
 }
 
+enum CourseClass {
+  FIVE
+  SIX
+  SEVEN
+  EIGHT
+  NINE
+  TEN
+  ELEVEN
+  TWELVE
+  MODEL_TEST
+  ADMISSION
+  OTHER
+}
+
+enum PriceType {
+  PAID
+  FREE
+}
+
 enum EnrollmentStatus {
   ACTIVE
   COMPLETED
@@ -44,7 +63,7 @@ enum EnrollmentStatus {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
   email         String    @unique
   password      String
   name          String
@@ -64,13 +83,13 @@ model User {
   messagesReceived Message[] @relation("ReceiverMessages")
   notifications  Notification[]
 
-  @@index([email])
   @@index([role])
+  @@map("users")
 }
 
 model StudentProfile {
-  id        String   @id @default(cuid())
-  userId    String   @unique
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @unique @db.ObjectId
   studentId String?  @unique
   address   String?
   guardianName String?
@@ -79,18 +98,17 @@ model StudentProfile {
   updatedAt DateTime @updatedAt
 
   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  enrollments Enrollment[]
 
-  @@index([userId])
+  @@map("studentProfiles")
 }
 
 model TeacherProfile {
-  id            String   @id @default(cuid())
-  userId        String   @unique
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId        String   @unique @db.ObjectId
   employeeId    String?  @unique
   qualification String?
   specialization String?
-  bio           String?  @db.Text
+  bio           String?
   experience    Int?     @default(0)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
@@ -98,23 +116,27 @@ model TeacherProfile {
   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   courses   Course[]
 
-  @@index([userId])
+  @@map("teacherProfiles")
 }
 
 model Course {
-  id          String      @id @default(cuid())
+  id          String      @id @default(auto()) @map("_id") @db.ObjectId
   title       String
   titleBn     String?     // Bangla title
   slug        String      @unique
-  description String      @db.Text
-  descriptionBn String?   @db.Text // Bangla description
+  description String
+  descriptionBn String?   // Bangla description
   thumbnail   String?
-  price       Decimal     @db.Decimal(10, 2)
+  price       Float       @default(0)
   duration    Int         // Duration in days
   courseType  CourseType  @default(ONLINE)
+  courseClass CourseClass @default(OTHER) // Class filter
+  priceType   PriceType   @default(PAID) // Paid or Free
+  features    String[]    // List of features/benefits
   level       String?     // Beginner, Intermediate, Advanced
   status      String      @default("draft") // draft, published, archived
-  teacherId   String
+  order       Int         @default(0) // For sorting/ordering
+  teacherId   String      @db.ObjectId
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
 
@@ -123,18 +145,22 @@ model Course {
   assignments Assignment[]
   content     CourseContent[]
 
-  @@index([slug])
   @@index([teacherId])
   @@index([status])
+  @@index([courseClass])
+  @@index([courseType])
+  @@index([priceType])
+  @@index([order])
+  @@map("courses")
 }
 
 model CourseContent {
-  id          String   @id @default(cuid())
-  courseId    String
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  courseId    String   @db.ObjectId
   title       String
   type        String   // video, pdf, assignment, quiz
   contentUrl  String?
-  description String?  @db.Text
+  description String?
   order       Int      @default(0)
   duration    Int?     // For videos in minutes
   createdAt   DateTime @default(now())
@@ -143,13 +169,13 @@ model CourseContent {
   course      Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
   @@index([courseId])
-  @@index([courseId, order])
+  @@map("courseContents")
 }
 
 model Enrollment {
-  id        String           @id @default(cuid())
-  studentId String
-  courseId  String
+  id        String           @id @default(auto()) @map("_id") @db.ObjectId
+  studentId String           @db.ObjectId
+  courseId  String           @db.ObjectId
   status    EnrollmentStatus @default(ACTIVE)
   enrolledAt DateTime        @default(now())
   completedAt DateTime?
@@ -165,13 +191,14 @@ model Enrollment {
   @@index([studentId])
   @@index([courseId])
   @@index([status])
+  @@map("enrollments")
 }
 
 model Payment {
-  id            String        @id @default(cuid())
-  userId        String
-  enrollmentId  String?       @unique
-  amount        Decimal       @db.Decimal(10, 2)
+  id            String        @id @default(auto()) @map("_id") @db.ObjectId
+  userId        String        @db.ObjectId
+  enrollmentId  String?       @unique @db.ObjectId
+  amount        Float
   method        PaymentMethod
   status        PaymentStatus @default(PENDING)
   transactionId String?       @unique
@@ -184,19 +211,19 @@ model Payment {
   updatedAt     DateTime      @updatedAt
 
   user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  enrollment Enrollment?
+  enrollment Enrollment? @relation(fields: [enrollmentId], references: [id])
 
   @@index([userId])
   @@index([status])
-  @@index([transactionId])
   @@index([createdAt])
+  @@map("payments")
 }
 
 model Assignment {
-  id          String   @id @default(cuid())
-  courseId    String
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  courseId    String   @db.ObjectId
   title       String
-  description String   @db.Text
+  description String
   dueDate     DateTime
   maxScore    Int      @default(100)
   createdAt   DateTime @default(now())
@@ -207,16 +234,17 @@ model Assignment {
 
   @@index([courseId])
   @@index([dueDate])
+  @@map("assignments")
 }
 
 model AssignmentSubmission {
-  id           String   @id @default(cuid())
-  assignmentId String
-  studentId    String
-  content      String?  @db.Text
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  assignmentId String   @db.ObjectId
+  studentId    String   @db.ObjectId
+  content      String?
   fileUrl      String?
   score        Int?
-  feedback     String?  @db.Text
+  feedback     String?
   submittedAt  DateTime @default(now())
   gradedAt     DateTime?
   createdAt    DateTime @default(now())
@@ -227,14 +255,15 @@ model AssignmentSubmission {
   @@unique([assignmentId, studentId])
   @@index([studentId])
   @@index([assignmentId])
+  @@map("assignmentSubmissions")
 }
 
 model Message {
-  id        String   @id @default(cuid())
-  senderId  String
-  receiverId String
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  senderId  String   @db.ObjectId
+  receiverId String   @db.ObjectId
   subject   String?
-  content   String   @db.Text
+  content   String
   read      Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -246,15 +275,16 @@ model Message {
   @@index([receiverId])
   @@index([read])
   @@index([createdAt])
+  @@map("messages")
 }
 
 model Blog {
-  id          String   @id @default(cuid())
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
   title       String
   titleBn     String?
   slug        String   @unique
-  content     String   @db.Text
-  contentBn   String?  @db.Text
+  content     String
+  contentBn   String?
   excerpt     String?
   excerptBn   String?
   image       String?
@@ -264,17 +294,17 @@ model Blog {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  @@index([slug])
   @@index([published])
   @@index([publishedAt])
+  @@map("blogs")
 }
 
 model Notice {
-  id          String   @id @default(cuid())
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
   title       String
   titleBn     String?
-  content     String   @db.Text
-  contentBn   String?  @db.Text
+  content     String
+  contentBn   String?
   priority    String   @default("normal") // low, normal, high, urgent
   published   Boolean  @default(false)
   publishedAt DateTime?
@@ -284,13 +314,14 @@ model Notice {
   @@index([published])
   @@index([priority])
   @@index([publishedAt])
+  @@map("notices")
 }
 
 model Notification {
-  id        String   @id @default(cuid())
-  userId    String
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
   title     String
-  message   String   @db.Text
+  message   String
   type      String   // info, success, warning, error
   read      Boolean  @default(false)
   link      String?
@@ -301,14 +332,15 @@ model Notification {
   @@index([userId])
   @@index([read])
   @@index([createdAt])
+  @@map("notifications")
 }
 
 model SiteSettings {
-  id        String   @id @default(cuid())
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   key       String   @unique
   value     Json
   updatedAt DateTime @updatedAt
 
-  @@index([key])
+  @@map("siteSettings")
 }
 

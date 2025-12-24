@@ -72,3 +72,20 @@ html {
   background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(245, 158, 11, 0.1) 100%);
 }
 
+/* Modern Bengali Typography */
+.font-bengali {
+  font-family: var(--font-bengali), 'Noto Sans Bengali', 'Mukta', sans-serif;
+  font-feature-settings: 'kern' 1, 'liga' 1;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Better line height for Bengali text */
+.font-bengali h1,
+.font-bengali h2,
+.font-bengali h3 {
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+

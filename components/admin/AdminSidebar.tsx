@@ -7,8 +7,9 @@ import { cn } from '@/lib/utils'
 
 const menuItems = [
   { href: '/admin', label: 'Dashboard', icon: Home },
+  { href: '/admin/programs', label: 'Programs', icon: BookOpen },
+  { href: '/admin/content', label: 'Content CMS', icon: FileText },
   { href: '/admin/users', label: 'Users', icon: Users },
-  { href: '/admin/courses', label: 'Courses', icon: BookOpen },
   { href: '/admin/payments', label: 'Payments', icon: CreditCard },
   { href: '/admin/blog', label: 'Blog', icon: FileText },
   { href: '/admin/notices', label: 'Notices', icon: Bell },

@@ -51,8 +51,23 @@ async function main() {
 
   console.log('✅ Teacher user created:', teacherUser.email)
 
-  // Create sample courses if teacher profile exists
-  if (teacherUser.teacherProfile) {
+  // Get or create teacher profile
+  let teacherProfile = teacherUser.teacherProfile
+  
+  if (!teacherProfile) {
+    teacherProfile = await prisma.teacherProfile.create({
+      data: {
+        userId: teacherUser.id,
+        qualification: 'MSc in Mathematics',
+        specialization: 'Mathematics & Physics',
+        experience: 10,
+        bio: 'Experienced educator with 10+ years of teaching experience.',
+      },
+    })
+  }
+
+  // Create sample courses
+  if (teacherProfile) {
     const course1 = await prisma.course.upsert({
       where: { slug: 'hsc-preparation-course' },
       update: {},
@@ -65,8 +80,18 @@ async function main() {
         price: 5000,
         duration: 180,
         courseType: 'ONLINE',
+        courseClass: 'TWELVE',
+        priceType: 'PAID',
+        features: [
+          'দৃঢ় বেসিক গঠনে কনসেপ্ট ভিত্তিক আলোচনা',
+          'বাস্তব উদাহরণ, গল্প এবং চিত্রালোকে সাজানো',
+          'সংজ্ঞা, বৈশিষ্ট্য, পার্থক্য ইত্যাদি নির্দেশকের মাধ্যমে পৃথককরণ',
+          'বোর্ড ও এডমিশন প্রশ্ন-সমাধান ব্যাখ্যাসহকারে বিশ্লেষণ',
+          'প্র্যাকটিস ও গাণিতিক সমস্যাবলি সংযোজন',
+        ],
         level: 'Intermediate',
         status: 'published',
+        order: 0,
         teacherId: teacherUser.teacherProfile.id,
       },
     })
@@ -83,8 +108,44 @@ async function main() {
         price: 4000,
         duration: 150,
         courseType: 'HYBRID',
+        courseClass: 'TEN',
+        priceType: 'PAID',
+        features: [
+          'সব বিষয়ে কভারেজ',
+          'ইন্টারেক্টিভ ক্লাস',
+          'প্র্যাকটিস টেস্ট',
+          'সাপোর্ট সিস্টেম',
+        ],
         level: 'Beginner',
         status: 'published',
+        order: 1,
+        teacherId: teacherUser.teacherProfile.id,
+      },
+    })
+
+    // Add a free course example
+    const course3 = await prisma.course.upsert({
+      where: { slug: 'free-trial-course' },
+      update: {},
+      create: {
+        title: 'Free Trial Course',
+        titleBn: 'ফ্রি ট্রায়াল কোর্স',
+        slug: 'free-trial-course',
+        description: 'Try our platform with this free introductory course.',
+        descriptionBn: 'এই ফ্রি পরিচায়ক কোর্স দিয়ে আমাদের প্ল্যাটফর্ম চেষ্টা করুন।',
+        price: 0,
+        duration: 30,
+        courseType: 'ONLINE',
+        courseClass: 'OTHER',
+        priceType: 'FREE',
+        features: [
+          'বিনামূল্যে কোর্স',
+          'সব বিষয়ে পরিচিতি',
+          'এক্সপার্ট গাইডেন্স',
+        ],
+        level: 'Beginner',
+        status: 'published',
+        order: 2,
         teacherId: teacherUser.teacherProfile.id,
       },
     })

@@ -61,11 +61,11 @@ export default function AdminDashboard() {
       link: '/admin/users?role=TEACHER',
     },
     {
-      title: 'Total Courses',
+      title: 'Total Programs',
       value: stats.totalCourses,
       icon: BookOpen,
       color: 'bg-primary-500',
-      link: '/admin/courses',
+      link: '/admin/programs',
     },
     {
       title: 'Total Revenue',
@@ -178,7 +178,7 @@ export default function AdminDashboard() {
               </div>
             </Link>
             <Link
-              href="/admin/courses/new"
+              href="/admin/programs/new"
               className="block p-4 border border-neutral-200 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition-colors"
             >
               <div className="flex items-center space-x-3">
@@ -186,8 +186,8 @@ export default function AdminDashboard() {
                   <BookOpen className="w-5 h-5 text-primary-600" />
                 </div>
                 <div>
-                  <div className="font-semibold text-neutral-900">Create Course</div>
-                  <div className="text-sm text-neutral-600">Add a new course to the platform</div>
+                  <div className="font-semibold text-neutral-900">Create Program</div>
+                  <div className="text-sm text-neutral-600">Add a new program to the platform</div>
                 </div>
               </div>
             </Link>

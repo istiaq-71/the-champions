@@ -4,12 +4,13 @@ import Link from 'next/link'
 import { useSession, signOut } from 'next-auth/react'
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, User, LogOut, BookOpen, GraduationCap, Settings } from 'lucide-react'
-import Image from 'next/image'
+import { Menu, X, User, LogOut, BookOpen, GraduationCap, Settings, ChevronDown, Phone } from 'lucide-react'
+import { Logo } from '@/components/Logo'
 
 export function Navbar() {
   const { data: session } = useSession()
   const [isOpen, setIsOpen] = useState(false)
+  const [programsDropdownOpen, setProgramsDropdownOpen] = useState(false)
 
   const handleSignOut = async () => {
     await signOut({ callbackUrl: '/' })
@@ -26,25 +27,106 @@ export function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-3 group">
-            <div className="relative w-10 h-10">
-              {/* Placeholder for logo - replace with actual logo */}
-              <div className="w-full h-full gradient-primary rounded-lg flex items-center justify-center text-white font-bold text-xl group-hover:scale-110 transition-transform">
-                1
-              </div>
-            </div>
-            <span className="text-xl font-serif font-bold text-primary-600">
-              The Champions
-            </span>
-          </Link>
+          <Logo size="md" showText={true} />
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             <Link href="/" className="text-neutral-700 hover:text-primary-600 transition-colors font-medium">
               Home
             </Link>
-            <Link href="/courses" className="text-neutral-700 hover:text-primary-600 transition-colors font-medium">
-              Courses
+            
+            {/* Programs Dropdown */}
+            <div className="relative">
+              <button
+                onMouseEnter={() => setProgramsDropdownOpen(true)}
+                onMouseLeave={() => setProgramsDropdownOpen(false)}
+                className="flex items-center space-x-1 text-neutral-700 hover:text-primary-600 transition-colors font-medium"
+              >
+                <span>প্রোগ্রামসমূহ</span>
+                <ChevronDown className={`w-4 h-4 transition-transform ${programsDropdownOpen ? 'rotate-180' : ''}`} />
+              </button>
+              {programsDropdownOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  onMouseEnter={() => setProgramsDropdownOpen(true)}
+                  onMouseLeave={() => setProgramsDropdownOpen(false)}
+                  className="absolute top-full left-0 mt-2 w-64 bg-white rounded-lg shadow-xl border border-neutral-200 py-2 z-50"
+                >
+                  <Link
+                    href="/courses?class=FIVE"
+                    className="block px-4 py-2 text-neutral-700 hover:bg-primary-50 hover:text-primary-600 transition-colors"
+                  >
+                    Class Five (পঞ্চম শ্রেণী)
+                  </Link>
+                  <Link
+                    href="/courses?class=SIX"
+                    className="block px-4 py-2 text-neutral-700 hover:bg-primary-50 hover:text-primary-600 transition-colors"
+                  >
+                    Class Six (ষষ্ঠ শ্রেণী)
+                  </Link>
+                  <Link
+                    href="/courses?class=SEVEN"
+                    className="block px-4 py-2 text-neutral-700 hover:bg-primary-50 hover:text-primary-600 transition-colors"
+                  >
+                    Class Seven (সপ্তম শ্রেণী)
+                  </Link>
+                  <Link
+                    href="/courses?class=EIGHT"
+                    className="block px-4 py-2 text-neutral-700 hover:bg-primary-50 hover:text-primary-600 transition-colors"
+                  >
+                    Class Eight (অষ্টম শ্রেণী)
+                  </Link>
+                  <Link
+                    href="/courses?class=NINE"
+                    className="block px-4 py-2 text-neutral-700 hover:bg-primary-50 hover:text-primary-600 transition-colors"
+                  >
+                    Class Nine (নবম শ্রেণী)
+                  </Link>
+                  <Link
+                    href="/courses?class=TEN"
+                    className="block px-4 py-2 text-neutral-700 hover:bg-primary-50 hover:text-primary-600 transition-colors"
+                  >
+                    Class Ten (দশম শ্রেণী)
+                  </Link>
+                  <Link
+                    href="/courses?class=ELEVEN"
+                    className="block px-4 py-2 text-neutral-700 hover:bg-primary-50 hover:text-primary-600 transition-colors"
+                  >
+                    Class Eleven (একাদশ শ্রেণী)
+                  </Link>
+                  <Link
+                    href="/courses?class=TWELVE"
+                    className="block px-4 py-2 text-neutral-700 hover:bg-primary-50 hover:text-primary-600 transition-colors"
+                  >
+                    Class Twelve (দ্বাদশ শ্রেণী)
+                  </Link>
+                  <div className="border-t border-neutral-200 my-2" />
+                  <Link
+                    href="/courses?class=MODEL_TEST"
+                    className="block px-4 py-2 text-neutral-700 hover:bg-primary-50 hover:text-primary-600 transition-colors"
+                  >
+                    Model Test (মডেল টেস্ট)
+                  </Link>
+                  <Link
+                    href="/courses?class=ADMISSION"
+                    className="block px-4 py-2 text-neutral-700 hover:bg-primary-50 hover:text-primary-600 transition-colors"
+                  >
+                    Admission (ভর্তি)
+                  </Link>
+                  <div className="border-t border-neutral-200 my-2" />
+                  <Link
+                    href="/courses"
+                    className="block px-4 py-2 text-primary-600 hover:bg-primary-50 font-semibold transition-colors"
+                  >
+                    View All Programs
+                  </Link>
+                </motion.div>
+              )}
+            </div>
+
+            <Link href="/branches" className="text-neutral-700 hover:text-primary-600 transition-colors font-medium">
+              শাখাসমূহ
             </Link>
             <Link href="/about" className="text-neutral-700 hover:text-primary-600 transition-colors font-medium">
               About
@@ -52,6 +134,15 @@ export function Navbar() {
             <Link href="/contact" className="text-neutral-700 hover:text-primary-600 transition-colors font-medium">
               Contact
             </Link>
+            
+            {/* Contact Number */}
+            <a
+              href="tel:+8801234567890"
+              className="flex items-center space-x-2 text-primary-600 hover:text-primary-700 transition-colors font-semibold"
+            >
+              <Phone className="w-4 h-4" />
+              <span>09666775566</span>
+            </a>
 
             {session ? (
               <div className="flex items-center space-x-4">
@@ -92,7 +183,7 @@ export function Navbar() {
                   href="/auth/signup"
                   className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-medium"
                 >
-                  Sign Up
+                  Join Now
                 </Link>
               </div>
             )}
