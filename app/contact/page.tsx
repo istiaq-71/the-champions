@@ -42,7 +42,7 @@ export default function ContactPage() {
             Get In Touch
           </h1>
           <p className="text-xl text-neutral-600 max-w-3xl mx-auto">
-            Have questions? We&#39;d love to hear from you. Send us a message and we&#39;ll respond as soon as possible.
+            Have questions? We&apos;d love to hear from you. Send us a message and we&apos;ll respond as soon as possible.
           </p>
         </motion.div>
 

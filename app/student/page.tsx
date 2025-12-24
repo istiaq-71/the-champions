@@ -81,7 +81,7 @@ export default function StudentDashboard() {
         <h1 className="text-3xl font-bold text-neutral-900 mb-2">
           Welcome back, {session?.user?.name}!
         </h1>
-        <p className="text-neutral-600">Here&#39;s your learning progress overview</p>
+        <p className="text-neutral-600">Here&apos;s your learning progress overview</p>
       </div>
 
       {loading ? (

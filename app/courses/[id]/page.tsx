@@ -63,8 +63,7 @@ export default function CourseDetailPage() {
 
   useEffect(() => {
     fetchCourse()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [params.id])
+  }, [fetchCourse])
 
   const handleEnroll = async () => {
     if (!session) {
