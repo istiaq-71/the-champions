@@ -207,28 +207,16 @@ async function main() {
         },
       })
 
-      // TypeScript type narrowing - check and use immediately
-      if (teacherUser.teacherProfile === null) {
+      if (teacherUser.teacherProfile) {
+        // Ensure we have the teacherProfile with the related user included
+        teacherProfile = await prisma.teacherProfile.findUnique({
+          where: { id: teacherUser.teacherProfile.id },
+          include: { user: true },
+        }) as typeof teacherProfile
+      } else {
         console.error('❌ Failed to create teacher profile')
         return
       }
-      
-      const profileId = teacherUser.teacherProfile.id
-      
-      // Fetch with user relation included
-      const fetchedProfile = await prisma.teacherProfile.findUnique({
-        where: { id: profileId },
-        include: {
-          user: true,
-        },
-      })
-      
-      if (!fetchedProfile) {
-        console.error('❌ Failed to fetch teacher profile with user relation')
-        return
-      }
-      
-      teacherProfile = fetchedProfile
     } catch (error) {
       console.error('❌ Error creating teacher:', error)
       console.error('💡 Please ensure database connection is working and run: npm run db:seed')
@@ -236,11 +224,11 @@ async function main() {
     }
   }
 
-  if (!teacherProfile || !teacherProfile.user) {
-    console.error('❌ Teacher profile or user not found')
+  if (!teacherProfile) {
+    console.error('❌ No teacher profile found after creation')
     return
   }
-  
+
   console.log('✅ Using teacher:', teacherProfile.user.name)
 
   // Create demo programs

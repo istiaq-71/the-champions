@@ -1,8 +1,8 @@
-'use client'
+ 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { signIn } from 'next-auth/react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { useForm } from 'react-hook-form'
@@ -20,10 +20,17 @@ type SignInForm = z.infer<typeof signInSchema>
 
 export default function SignInPage() {
   const router = useRouter()
-  const searchParams = useSearchParams()
+  const [from, setFrom] = useState('/')
   const [showPassword, setShowPassword] = useState(false)
+  useEffect(() => {
+    try {
+      const sp = new URLSearchParams(window.location.search)
+      setFrom(sp.get('from') || '/')
+    } catch (e) {
+      setFrom('/')
+    }
+  }, [])
   const [isLoading, setIsLoading] = useState(false)
-  const from = searchParams.get('from') || '/'
 
   const {
     register,
