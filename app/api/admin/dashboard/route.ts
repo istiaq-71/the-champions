@@ -1,7 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '@/lib/auth'
-import { prisma } from '@/lib/prisma'
 
 // Mark as dynamic to prevent static prerender attempts during build
 export const dynamic = 'force-dynamic'
@@ -12,6 +9,20 @@ export async function GET(req: NextRequest) {
     if (!process.env.DATABASE_URL || !process.env.NEXTAUTH_SECRET) {
       console.warn('Missing DATABASE_URL or NEXTAUTH_SECRET during build/runtime')
       return NextResponse.json({ message: 'Server not configured' }, { status: 503 })
+    }
+
+    // Import auth and prisma lazily only at runtime (avoid import-time side-effects during build)
+    let getServerSession: any
+    let authOptions: any
+    let prisma: any
+
+    try {
+      ;({ getServerSession } = await import('next-auth'))
+      ;({ authOptions } = await import('@/lib/auth'))
+      ;({ prisma } = await import('@/lib/prisma'))
+    } catch (err) {
+      console.error('Runtime import error for auth/prisma:', err)
+      return NextResponse.json({ message: 'Server error' }, { status: 500 })
     }
 
     let session
@@ -36,7 +47,7 @@ export async function GET(req: NextRequest) {
       prisma.payment.count({ where: { status: 'PENDING' } }),
     ])
 
-    const totalRevenue = payments.reduce((acc, p) => acc + Number(p.amount), 0)
+    const totalRevenue = payments.reduce((acc: number, p: any) => acc + Number(p.amount), 0)
 
     return NextResponse.json({
       totalStudents,

@@ -31,9 +31,6 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    // Get limit from query params
-    const limit = parseInt(searchParams.get('limit') || '20')
-
     let programs
     try {
       programs = await prisma.course.findMany({
@@ -54,7 +51,6 @@ export async function GET(request: NextRequest) {
           { order: 'asc' },
           { createdAt: 'desc' },
         ],
-        take: limit,
       })
     } catch (dbError: any) {
       console.error('Database error:', dbError)
@@ -82,7 +78,7 @@ export async function GET(request: NextRequest) {
       slug: program.slug,
       duration: program.duration,
       level: program.level,
-      teacher: program.teacher?.user?.name || 'Instructor',
+      teacher: program.teacher.user.name,
     }))
 
     return NextResponse.json({

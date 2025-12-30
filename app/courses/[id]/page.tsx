@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
@@ -42,9 +42,13 @@ export default function CourseDetailPage() {
   const [loading, setLoading] = useState(true)
   const [enrolling, setEnrolling] = useState(false)
 
-  const fetchCourse = useCallback(async () => {
-    if (!params.id) return
-    
+  useEffect(() => {
+    if (params.id) {
+      fetchCourse()
+    }
+  }, [params.id])
+
+  const fetchCourse = async () => {
     try {
       const response = await fetch(`/api/courses/${params.id}`)
       if (response.ok) {
@@ -59,12 +63,7 @@ export default function CourseDetailPage() {
     } finally {
       setLoading(false)
     }
-  }, [params.id])
-
-  useEffect(() => {
-    fetchCourse()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fetchCourse])
+  }
 
   const handleEnroll = async () => {
     if (!session) {

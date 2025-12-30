@@ -35,7 +35,7 @@ export default function AboutPage() {
             <p className="text-neutral-700 leading-relaxed text-lg">
               The Champions is dedicated to providing world-class academic and admission care 
               to students who aspire to become leaders in their fields. We believe that every 
-              student has the potential to achieve greatness, and we&apos;re here to guide them 
+              student has the potential to achieve greatness, and we're here to guide them 
               every step of the way.
             </p>
             <p className="text-neutral-700 leading-relaxed text-lg">
@@ -63,7 +63,7 @@ export default function AboutPage() {
                 <Heart className="w-6 h-6 text-primary-600 mt-1 flex-shrink-0" />
                 <div>
                   <h3 className="font-semibold text-neutral-900 mb-1">Dedication</h3>
-                  <p className="text-neutral-600">We&apos;re committed to our students&apos; success.</p>
+                  <p className="text-neutral-600">We're committed to our students' success.</p>
                 </div>
               </div>
               <div className="flex items-start space-x-4">
@@ -77,7 +77,7 @@ export default function AboutPage() {
                 <Award className="w-6 h-6 text-primary-600 mt-1 flex-shrink-0" />
                 <div>
                   <h3 className="font-semibold text-neutral-900 mb-1">Achievement</h3>
-                  <p className="text-neutral-600">Celebrating every student&apos;s achievements.</p>
+                  <p className="text-neutral-600">Celebrating every student's achievements.</p>
                 </div>
               </div>
             </div>
@@ -92,7 +92,7 @@ export default function AboutPage() {
         >
           <h2 className="text-3xl font-bold mb-4">Join Us Today</h2>
           <p className="text-xl mb-8 text-white/90 max-w-2xl mx-auto">
-            Start your journey to becoming a champion. We&apos;re here to support you every step of the way.
+            Start your journey to becoming a champion. We're here to support you every step of the way.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <a

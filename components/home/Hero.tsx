@@ -3,362 +3,242 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
-import { ArrowRight, ChevronLeft, ChevronRight, Check, Star, Clock } from 'lucide-react'
+import { ArrowRight, Play, ChevronLeft, ChevronRight } from 'lucide-react'
 
-interface Course {
-  id: string
-  title: string
-  titleBn?: string
-  description?: string
-  descriptionBn?: string
-  thumbnail?: string
-  price: number
-  priceType: 'PAID' | 'FREE'
-  courseType: 'ONLINE' | 'OFFLINE' | 'HYBRID'
-  features?: string[]
-  slug: string
-  duration?: number
-  level?: string
-}
+const heroSlides = [
+  {
+    id: 1,
+    titleBn: 'সময়োপযোগী প্রোগ্রামসমূহ',
+    titleEn: 'Time-Appropriate Programs',
+    description: 'The Champions - Academic & Admission Care',
+    bgClass: 'bg-gradient-to-br from-primary-600 to-primary-800',
+  },
+  {
+    id: 2,
+    titleBn: 'মেধাবী শিক্ষকদের সাথে',
+    titleEn: 'Expert Teachers & Guidance',
+    description: 'Learn from the best educators in Bangladesh',
+    bgClass: 'bg-gradient-to-br from-blue-600 to-blue-800',
+  },
+  {
+    id: 3,
+    titleBn: 'অনলাইন ও অফলাইন',
+    titleEn: 'Online & Offline Classes',
+    description: 'Flexible learning options for every student',
+    bgClass: 'bg-gradient-to-br from-green-600 to-green-800',
+  },
+] as const
 
 export function Hero() {
-  const [courses, setCourses] = useState<Course[]>([])
-  const [loading, setLoading] = useState(true)
-  const [currentIndex, setCurrentIndex] = useState(0)
-  const [isHovered, setIsHovered] = useState(false)
-
-  // Fetch courses on mount
-  useEffect(() => {
-    fetchCourses()
-  }, [])
-
-  const fetchCourses = async () => {
-    try {
-      const response = await fetch('/api/programs?limit=10')
-      if (response.ok) {
-        const data = await response.json()
-        setCourses(data.programs || [])
-      }
-    } catch (error) {
-      console.error('Error fetching courses:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  // Auto-slide functionality
-  useEffect(() => {
-    if (courses.length === 0 || isHovered) return
-
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % courses.length)
-    }, 5000) // Change slide every 5 seconds
-
-    return () => clearInterval(interval)
-  }, [courses.length, isHovered])
+  const [currentSlide, setCurrentSlide] = useState(0)
 
   const nextSlide = () => {
-    setCurrentIndex((prev) => (prev + 1) % courses.length)
+    setCurrentSlide((prev) => (prev + 1) % heroSlides.length)
   }
 
   const prevSlide = () => {
-    setCurrentIndex((prev) => (prev - 1 + courses.length) % courses.length)
+    setCurrentSlide((prev) => (prev - 1 + heroSlides.length) % heroSlides.length)
   }
 
-  const goToSlide = (index: number) => {
-    setCurrentIndex(index)
-  }
+  // Auto-slide every 5 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % heroSlides.length)
+    }, 5000)
+    return () => clearInterval(interval)
+  }, [])
 
-  const currentCourse = courses[currentIndex] || courses[0]
-
-  // Background gradients that change with course
-  const bgGradients = [
-    'from-primary-600 via-primary-700 to-primary-800',
-    'from-blue-600 via-blue-700 to-blue-800',
-    'from-purple-600 via-purple-700 to-purple-800',
-    'from-green-600 via-green-700 to-green-800',
-    'from-orange-600 via-orange-700 to-orange-800',
-  ]
-  const currentBg = bgGradients[currentIndex % bgGradients.length]
-
-  if (loading) {
-    return (
-      <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-600 to-primary-800">
-        <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-16 w-16 border-b-4 border-white"></div>
-          <p className="mt-4 text-white text-xl">Loading courses...</p>
-        </div>
-      </section>
-    )
-  }
-
-  if (courses.length === 0) {
-    return (
-      <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-600 to-primary-800">
-        <div className="text-center text-white px-4">
-          <h1 className="text-5xl md:text-6xl font-bengali font-bold mb-4">
-            The Champions
-          </h1>
-          <p className="text-xl md:text-2xl mb-8">Academic & Admission Care</p>
-          <Link
-            href="/courses"
-            className="inline-flex items-center space-x-2 px-8 py-4 bg-white text-primary-600 rounded-lg font-semibold hover:bg-neutral-100 transition-all transform hover:scale-105 shadow-xl"
-          >
-            <span>Explore Courses</span>
-            <ArrowRight className="w-5 h-5" />
-          </Link>
-        </div>
-      </section>
-    )
-  }
+  const currentSlideData = heroSlides[currentSlide]
 
   return (
-    <section
-      className="relative min-h-[85vh] flex items-center overflow-hidden"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      {/* Animated Background */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={currentIndex}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 1 }}
-          className={`absolute inset-0 bg-gradient-to-br ${currentBg}`}
-        >
-          {/* Animated background elements */}
-          <div className="absolute inset-0 overflow-hidden">
-            <motion.div
-              animate={{
-                x: [0, 100, 0],
-                y: [0, -50, 0],
-              }}
-              transition={{
-                duration: 20,
-                repeat: Infinity,
-                ease: 'linear',
-              }}
-              className="absolute top-20 left-20 w-96 h-96 bg-white/5 rounded-full blur-3xl"
-            />
-            <motion.div
-              animate={{
-                x: [0, -80, 0],
-                y: [0, 80, 0],
-              }}
-              transition={{
-                duration: 25,
-                repeat: Infinity,
-                ease: 'linear',
-              }}
-              className="absolute bottom-20 right-20 w-[500px] h-[500px] bg-white/5 rounded-full blur-3xl"
-            />
-            <motion.div
-              animate={{
-                x: [0, 60, 0],
-                y: [0, -40, 0],
-              }}
-              transition={{
-                duration: 30,
-                repeat: Infinity,
-                ease: 'linear',
-              }}
-              className="absolute top-1/2 left-1/2 w-[400px] h-[400px] bg-white/3 rounded-full blur-3xl"
-            />
-          </div>
-        </motion.div>
-      </AnimatePresence>
+    <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-white">
+      {/* Animated Background with Slides */}
+      <div className="absolute inset-0">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentSlide}
+            initial={{ opacity: 0, scale: 1.1 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            transition={{ duration: 0.8, ease: 'easeInOut' }}
+            className={`absolute inset-0 ${currentSlideData.bgClass}`}
+          >
+            {/* Decorative overlay */}
+            <div className="absolute inset-0 bg-gradient-to-br from-black/10 to-transparent"></div>
+            {/* Animated background elements */}
+            <div className="absolute inset-0 overflow-hidden">
+              <motion.div
+                animate={{
+                  x: [0, 100, 0],
+                  y: [0, -50, 0],
+                }}
+                transition={{
+                  duration: 20,
+                  repeat: Infinity,
+                  ease: 'linear',
+                }}
+                className="absolute top-20 left-20 w-96 h-96 bg-white/5 rounded-full blur-3xl"
+              />
+              <motion.div
+                animate={{
+                  x: [0, -80, 0],
+                  y: [0, 80, 0],
+                }}
+                transition={{
+                  duration: 25,
+                  repeat: Infinity,
+                  ease: 'linear',
+                }}
+                className="absolute bottom-20 right-20 w-[500px] h-[500px] bg-accent-400/10 rounded-full blur-3xl"
+              />
+            </div>
+          </motion.div>
+        </AnimatePresence>
+      </div>
 
       {/* Content Container */}
       <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="max-w-4xl mx-auto">
-          {/* Text Content - Centered */}
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={currentIndex}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -30 }}
-              transition={{ duration: 0.6 }}
-              className="text-white space-y-6 text-center"
-            >
-              {/* Badge */}
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-center min-h-[70vh]">
+          {/* Left Side - Image/Visual Area (60%) */}
+          <div className="lg:col-span-3 relative h-[400px] lg:h-[600px] rounded-2xl overflow-hidden">
+            <AnimatePresence mode="wait">
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-                className="inline-flex items-center space-x-2 px-4 py-2 bg-white/20 backdrop-blur-md rounded-full"
+                key={currentSlide}
+                initial={{ opacity: 0, x: -50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 50 }}
+                transition={{ duration: 0.6 }}
+                className="absolute inset-0 flex items-center justify-center"
               >
-                <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                <span className="text-sm font-semibold">Featured Program</span>
+                {/* Placeholder for images - you can add actual images here */}
+                <div className="w-full h-full flex items-center justify-center bg-white/10 backdrop-blur-sm rounded-2xl">
+                  <div className="text-center p-8">
+                    <motion.div
+                      initial={{ scale: 0.8 }}
+                      animate={{ scale: 1 }}
+                      transition={{ delay: 0.2, type: 'spring' }}
+                      className="w-32 h-32 mx-auto mb-6 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-md"
+                    >
+                      <span className="text-6xl font-bold text-white">1</span>
+                    </motion.div>
+                    <motion.p
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.4 }}
+                      className="text-white/90 text-lg"
+                    >
+                      Premium Education Platform
+                    </motion.p>
+                  </div>
+                </div>
               </motion.div>
+            </AnimatePresence>
+          </div>
 
-              {/* Main Heading - Bengali */}
-              <motion.h1
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className="text-4xl md:text-5xl lg:text-6xl font-bengali font-bold leading-tight"
+          {/* Right Side - Text Content (40%) */}
+          <div className="lg:col-span-2 bg-white/95 backdrop-blur-md rounded-2xl p-8 lg:p-12 shadow-2xl">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentSlide}
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -50 }}
+                transition={{ duration: 0.6 }}
+                className="space-y-6"
               >
-                {currentCourse.titleBn || currentCourse.title}
-              </motion.h1>
+                {/* Main Bengali Heading */}
+                <motion.h1
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                  className="text-4xl md:text-5xl lg:text-6xl font-bengali font-bold text-primary-600 leading-tight"
+                >
+                  {currentSlideData.titleBn}
+                </motion.h1>
+                
+                {/* English Subtitle */}
+                <motion.p
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                  className="text-xl md:text-2xl text-neutral-700 font-medium"
+                >
+                  {currentSlideData.titleEn}
+                </motion.p>
 
-              {/* English Title */}
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-                className="text-xl md:text-2xl text-white/90 font-medium"
-              >
-                {currentCourse.title}
-              </motion.p>
-
-              {/* Description */}
-              {(currentCourse.descriptionBn || currentCourse.description) && (
+                {/* Description */}
                 <motion.p
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.4 }}
-                  className="text-lg text-white/80 leading-relaxed max-w-2xl mx-auto px-4"
+                  className="text-base md:text-lg text-neutral-600 leading-relaxed"
                 >
-                  {currentCourse.descriptionBn || currentCourse.description}
+                  {currentSlideData.description}
                 </motion.p>
-              )}
 
-              {/* Features */}
-              {currentCourse.features && currentCourse.features.length > 0 && (
+                {/* Action Buttons */}
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.5 }}
-                  className="space-y-2 flex flex-wrap justify-center gap-4"
+                  className="flex flex-col sm:flex-row items-start sm:items-center gap-4 pt-4"
                 >
-                  {currentCourse.features.slice(0, 4).map((feature, idx) => (
-                    <div key={idx} className="flex items-center space-x-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full">
-                      <Check className="w-4 h-4 text-white flex-shrink-0" />
-                      <span className="text-white/90 text-sm">{feature}</span>
+                  <Link
+                    href="/courses"
+                    className="group inline-flex items-center space-x-2 px-8 py-4 bg-primary-600 text-white rounded-lg font-semibold hover:bg-primary-700 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl"
+                  >
+                    <span>Explore Courses</span>
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                  <button className="inline-flex items-center space-x-2 text-neutral-700 hover:text-primary-600 transition-colors group">
+                    <div className="w-10 h-10 rounded-full bg-neutral-100 flex items-center justify-center group-hover:bg-primary-50 transition-colors">
+                      <Play className="w-5 h-5 ml-1 text-neutral-600 group-hover:text-primary-600" />
                     </div>
-                  ))}
+                    <span className="font-medium">Watch Video</span>
+                  </button>
                 </motion.div>
-              )}
-
-              {/* Course Meta Info */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6 }}
-                className="flex flex-wrap items-center justify-center gap-6"
-              >
-                {currentCourse.duration && (
-                  <div className="flex items-center space-x-2">
-                    <Clock className="w-5 h-5 text-white/80" />
-                    <span className="text-white/90">{currentCourse.duration} hours</span>
-                  </div>
-                )}
-                {currentCourse.level && (
-                  <div className="flex items-center space-x-2">
-                    <Star className="w-5 h-5 text-white/80" />
-                    <span className="text-white/90">{currentCourse.level}</span>
-                  </div>
-                )}
-                <div className="flex items-center space-x-2">
-                  <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
-                    currentCourse.courseType === 'ONLINE' 
-                      ? 'bg-blue-500 text-white'
-                      : currentCourse.courseType === 'OFFLINE'
-                      ? 'bg-orange-500 text-white'
-                      : 'bg-purple-500 text-white'
-                  }`}>
-                    {currentCourse.courseType}
-                  </span>
-                </div>
               </motion.div>
-
-              {/* Price and CTA */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.7 }}
-                className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-4"
-              >
-                <div>
-                  {currentCourse.priceType === 'FREE' ? (
-                    <div className="text-4xl font-bold text-white">Free</div>
-                  ) : (
-                    <div className="text-4xl font-bold text-white">
-                      ৳{currentCourse.price.toLocaleString('bn-BD')}
-                    </div>
-                  )}
-                  <div className="text-white/70 text-sm">Full Course Access</div>
-                </div>
-                <Link
-                  href={`/courses/${currentCourse.slug}`}
-                  className="group inline-flex items-center space-x-2 px-8 py-4 bg-white text-primary-600 rounded-lg font-semibold hover:bg-neutral-100 transition-all transform hover:scale-105 shadow-xl"
-                >
-                  <span>Enroll Now</span>
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </Link>
-              </motion.div>
-            </motion.div>
-          </AnimatePresence>
+            </AnimatePresence>
+          </div>
         </div>
 
-        {/* Navigation Arrows - Positioned far from content */}
-        {courses.length > 1 && (
-          <>
-            <button
-              onClick={prevSlide}
-              className="absolute left-2 md:left-8 lg:left-16 top-1/2 -translate-y-1/2 z-20 w-12 h-12 md:w-14 md:h-14 rounded-full bg-white/20 backdrop-blur-md shadow-lg flex items-center justify-center hover:bg-white/30 transition-all text-white hover:scale-110"
-              aria-label="Previous course"
-            >
-              <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
-            </button>
-            <button
-              onClick={nextSlide}
-              className="absolute right-2 md:right-8 lg:right-16 top-1/2 -translate-y-1/2 z-20 w-12 h-12 md:w-14 md:h-14 rounded-full bg-white/20 backdrop-blur-md shadow-lg flex items-center justify-center hover:bg-white/30 transition-all text-white hover:scale-110"
-              aria-label="Next course"
-            >
-              <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
-            </button>
-          </>
-        )}
+        {/* Navigation Arrows */}
+        <div className="absolute top-1/2 left-4 transform -translate-y-1/2 z-20">
+          <button
+            onClick={prevSlide}
+            className="w-12 h-12 rounded-full bg-white/90 backdrop-blur-md shadow-lg flex items-center justify-center hover:bg-white transition-colors text-neutral-700 hover:text-primary-600"
+            aria-label="Previous slide"
+          >
+            <ChevronLeft className="w-6 h-6" />
+          </button>
+        </div>
+        <div className="absolute top-1/2 right-4 transform -translate-y-1/2 z-20">
+          <button
+            onClick={nextSlide}
+            className="w-12 h-12 rounded-full bg-white/90 backdrop-blur-md shadow-lg flex items-center justify-center hover:bg-white transition-colors text-neutral-700 hover:text-primary-600"
+            aria-label="Next slide"
+          >
+            <ChevronRight className="w-6 h-6" />
+          </button>
+        </div>
 
         {/* Slide Indicators */}
-        {courses.length > 1 && (
-          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex space-x-2">
-            {courses.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => goToSlide(index)}
-                className={`h-2 rounded-full transition-all ${
-                  index === currentIndex
-                    ? 'bg-white w-8'
-                    : 'bg-white/50 hover:bg-white/75 w-2'
-                }`}
-                aria-label={`Go to slide ${index + 1}`}
-              />
-            ))}
-          </div>
-        )}
-
-        {/* Scroll Indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1 }}
-          className="absolute bottom-8 right-8 z-20"
-        >
-          <motion.div
-            animate={{ y: [0, 10, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="flex flex-col items-center space-y-2 text-white/70"
-          >
-            <span className="text-sm font-medium">Scroll Down</span>
-            <ChevronRight className="w-5 h-5 rotate-90" />
-          </motion.div>
-        </motion.div>
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 flex space-x-2">
+          {heroSlides.map((slide, index) => (
+            <button
+              key={slide.id}
+              onClick={() => setCurrentSlide(index)}
+              className={`w-3 h-3 rounded-full transition-all ${
+                index === currentSlide
+                  ? 'bg-white w-8'
+                  : 'bg-white/50 hover:bg-white/75'
+              }`}
+              aria-label={`Go to slide ${index + 1}`}
+            />
+          ))}
+        </div>
       </div>
     </section>
   )
 }
+

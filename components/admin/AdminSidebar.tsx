@@ -8,7 +8,6 @@ import { cn } from '@/lib/utils'
 const menuItems = [
   { href: '/admin', label: 'Dashboard', icon: Home },
   { href: '/admin/programs', label: 'Programs', icon: BookOpen },
-  { href: '/admin/content', label: 'Content CMS', icon: FileText },
   { href: '/admin/users', label: 'Users', icon: Users },
   { href: '/admin/payments', label: 'Payments', icon: CreditCard },
   { href: '/admin/blog', label: 'Blog', icon: FileText },

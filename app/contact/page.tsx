@@ -22,7 +22,7 @@ export default function ContactPage() {
 
     // TODO: Implement contact form API
     setTimeout(() => {
-      toast.success("Message sent successfully! We'll get back to you soon.")
+      toast.success('Message sent successfully! We\'ll get back to you soon.')
       setFormData({ name: '', email: '', subject: '', message: '' })
       setIsSubmitting(false)
     }, 1000)
@@ -42,7 +42,7 @@ export default function ContactPage() {
             Get In Touch
           </h1>
           <p className="text-xl text-neutral-600 max-w-3xl mx-auto">
-            Have questions? We&apos;d love to hear from you. Send us a message and we&apos;ll respond as soon as possible.
+            Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.
           </p>
         </motion.div>
 

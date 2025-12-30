@@ -1,5 +1,5 @@
-// i18n utility functions for App Router
-// Note: For App Router, we use a custom translation system
+import { useRouter } from 'next/router'
+import { useTranslation as useNextI18nTranslation } from 'next-i18next'
 
 // Translation keys for the application
 export const translations = {

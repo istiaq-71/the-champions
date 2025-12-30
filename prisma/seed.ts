@@ -51,23 +51,8 @@ async function main() {
 
   console.log('✅ Teacher user created:', teacherUser.email)
 
-  // Get or create teacher profile
-  let teacherProfile = teacherUser.teacherProfile
-  
-  if (!teacherProfile) {
-    teacherProfile = await prisma.teacherProfile.create({
-      data: {
-        userId: teacherUser.id,
-        qualification: 'MSc in Mathematics',
-        specialization: 'Mathematics & Physics',
-        experience: 10,
-        bio: 'Experienced educator with 10+ years of teaching experience.',
-      },
-    })
-  }
-
-  // Create sample courses
-  if (teacherProfile) {
+  // Create sample courses if teacher profile exists
+  if (teacherUser.teacherProfile) {
     const course1 = await prisma.course.upsert({
       where: { slug: 'hsc-preparation-course' },
       update: {},
