@@ -1,0 +1,178 @@
+﻿
+> the-champions@1.0.0 build
+> next build
+
+  Ôû▓ Next.js 14.2.35
+  - Environments: .env
+
+   Creating an optimized production build ...
+ Ô£ô Compiled successfully
+   Skipping linting
+   Checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/32) ...
+node.exe : Error fetching programs: B [Error]: Dynamic server usage: Route /api/programs couldn't be rendered 
+statically because it used `nextUrl.searchParams`. See more info here: 
+https://nextjs.org/docs/messages/dynamic-server-error
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Error fetching ...ic-server-error:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+    at V (C:\projects\The Champions\node_modules\next\dist\compiled\next-server\app-route.runtime.prod.js:6:21778)
+    at Object.get (C:\projects\The 
+Champions\node_modules\next\dist\compiled\next-server\app-route.runtime.prod.js:6:29137)
+    at c (C:\projects\The Champions\.next\server\app\api\programs\route.js:1:549)
+    at C:\projects\The Champions\node_modules\next\dist\compiled\next-server\app-route.runtime.prod.js:6:38417
+    at C:\projects\The Champions\node_modules\next\dist\server\lib\trace\tracer.js:140:36
+    at NoopContextManager.with (C:\projects\The 
+Champions\node_modules\next\dist\compiled\@opentelemetry\api\index.js:1:7062)
+    at ContextAPI.with (C:\projects\The Champions\node_modules\next\dist\compiled\@opentelemetry\api\index.js:1:518)
+    at NoopTracer.startActiveSpan (C:\projects\The 
+Champions\node_modules\next\dist\compiled\@opentelemetry\api\index.js:1:18093)
+    at ProxyTracer.startActiveSpan (C:\projects\The 
+Champions\node_modules\next\dist\compiled\@opentelemetry\api\index.js:1:18854)
+    at C:\projects\The Champions\node_modules\next\dist\server\lib\trace\tracer.js:122:103 {
+  description: "Route /api/programs couldn't be rendered statically because it used `nextUrl.searchParams`. See more 
+info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+Courses fetch error: B [Error]: Dynamic server usage: Route /api/courses couldn't be rendered statically because it 
+used `request.url`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+    at V (C:\projects\The Champions\node_modules\next\dist\compiled\next-server\app-route.runtime.prod.js:6:21778)
+    at Object.get (C:\projects\The 
+Champions\node_modules\next\dist\compiled\next-server\app-route.runtime.prod.js:6:29465)
+    at p (C:\projects\The Champions\.next\server\app\api\courses\route.js:1:557)
+    at C:\projects\The Champions\node_modules\next\dist\compiled\next-server\app-route.runtime.prod.js:6:38417
+    at C:\projects\The Champions\node_modules\next\dist\server\lib\trace\tracer.js:140:36
+    at NoopContextManager.with (C:\projects\The 
+Champions\node_modules\next\dist\compiled\@opentelemetry\api\index.js:1:7062)
+    at ContextAPI.with (C:\projects\The Champions\node_modules\next\dist\compiled\@opentelemetry\api\index.js:1:518)
+    at NoopTracer.startActiveSpan (C:\projects\The 
+Champions\node_modules\next\dist\compiled\@opentelemetry\api\index.js:1:18093)
+    at ProxyTracer.startActiveSpan (C:\projects\The 
+Champions\node_modules\next\dist\compiled\@opentelemetry\api\index.js:1:18854)
+    at C:\projects\The Champions\node_modules\next\dist\server\lib\trace\tracer.js:122:103 {
+  description: "Route /api/courses couldn't be rendered statically because it used `request.url`. See more info here: 
+https://nextjs.org/docs/messages/dynamic-server-error",
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+Error fetching site settings: B [Error]: Dynamic server usage: Route /api/site-settings couldn't be rendered 
+statically because it used `request.url`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+    at V (C:\projects\The Champions\node_modules\next\dist\compiled\next-server\app-route.runtime.prod.js:6:21778)
+    at Object.get (C:\projects\The 
+Champions\node_modules\next\dist\compiled\next-server\app-route.runtime.prod.js:6:29465)
+    at p (C:\projects\The Champions\.next\server\app\api\site-settings\route.js:1:557)
+    at C:\projects\The Champions\node_modules\next\dist\compiled\next-server\app-route.runtime.prod.js:6:38417
+    at C:\projects\The Champions\node_modules\next\dist\server\lib\trace\tracer.js:140:36
+    at NoopContextManager.with (C:\projects\The 
+Champions\node_modules\next\dist\compiled\@opentelemetry\api\index.js:1:7062)
+    at ContextAPI.with (C:\projects\The Champions\node_modules\next\dist\compiled\@opentelemetry\api\index.js:1:518)
+    at NoopTracer.startActiveSpan (C:\projects\The 
+Champions\node_modules\next\dist\compiled\@opentelemetry\api\index.js:1:18093)
+    at ProxyTracer.startActiveSpan (C:\projects\The 
+Champions\node_modules\next\dist\compiled\@opentelemetry\api\index.js:1:18854)
+    at C:\projects\The Champions\node_modules\next\dist\server\lib\trace\tracer.js:122:103 {
+  description: "Route /api/site-settings couldn't be rendered statically because it used `request.url`. See more info 
+here: https://nextjs.org/docs/messages/dynamic-server-error",
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+Dashboard error: n [Error]: Dynamic server usage: Route /api/teacher/dashboard couldn't be rendered statically because 
+it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+    at l (C:\projects\The Champions\.next\server\chunks\9276.js:1:37220)
+    at d (C:\projects\The Champions\.next\server\chunks\1790.js:25:27870)
+    at s (C:\projects\The Champions\.next\server\chunks\1790.js:25:20859)
+    at d (C:\projects\The Champions\.next\server\app\api\teacher\dashboard\route.js:1:1259)
+    at C:\projects\The Champions\node_modules\next\dist\compiled\next-server\app-route.runtime.prod.js:6:38417
+    at C:\projects\The Champions\node_modules\next\dist\server\lib\trace\tracer.js:140:36
+    at NoopContextManager.with (C:\projects\The 
+Champions\node_modules\next\dist\compiled\@opentelemetry\api\index.js:1:7062)
+    at ContextAPI.with (C:\projects\The Champions\node_modules\next\dist\compiled\@opentelemetry\api\index.js:1:518)
+    at NoopTracer.startActiveSpan (C:\projects\The 
+Champions\node_modules\next\dist\compiled\@opentelemetry\api\index.js:1:18093)
+    at ProxyTracer.startActiveSpan (C:\projects\The 
+Champions\node_modules\next\dist\compiled\@opentelemetry\api\index.js:1:18854) {
+  description: "Route /api/teacher/dashboard couldn't be rendered statically because it used `headers`. See more info 
+here: https://nextjs.org/docs/messages/dynamic-server-error",
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+Dashboard error: n [Error]: Dynamic server usage: Route /api/admin/dashboard couldn't be rendered statically because 
+it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+    at l (C:\projects\The Champions\.next\server\chunks\9276.js:1:37220)
+    at d (C:\projects\The Champions\.next\server\chunks\1790.js:25:27870)
+    at s (C:\projects\The Champions\.next\server\chunks\1790.js:25:20859)
+    at d (C:\projects\The Champions\.next\server\app\api\admin\dashboard\route.js:1:1259)
+    at C:\projects\The Champions\node_modules\next\dist\compiled\next-server\app-route.runtime.prod.js:6:38417
+    at C:\projects\The Champions\node_modules\next\dist\server\lib\trace\tracer.js:140:36
+    at NoopContextManager.with (C:\projects\The 
+Champions\node_modules\next\dist\compiled\@opentelemetry\api\index.js:1:7062)
+    at ContextAPI.with (C:\projects\The Champions\node_modules\next\dist\compiled\@opentelemetry\api\index.js:1:518)
+    at NoopTracer.startActiveSpan (C:\projects\The 
+Champions\node_modules\next\dist\compiled\@opentelemetry\api\index.js:1:18093)
+    at ProxyTracer.startActiveSpan (C:\projects\The 
+Champions\node_modules\next\dist\compiled\@opentelemetry\api\index.js:1:18854) {
+  description: "Route /api/admin/dashboard couldn't be rendered statically because it used `headers`. See more info 
+here: https://nextjs.org/docs/messages/dynamic-server-error",
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+   Generating static pages (8/32) 
+Dashboard error: n [Error]: Dynamic server usage: Route /api/student/dashboard couldn't be rendered statically because 
+it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+    at l (C:\projects\The Champions\.next\server\chunks\9276.js:1:37220)
+    at d (C:\projects\The Champions\.next\server\chunks\1790.js:25:27870)
+    at s (C:\projects\The Champions\.next\server\chunks\1790.js:25:20859)
+    at p (C:\projects\The Champions\.next\server\app\api\student\dashboard\route.js:1:1259)
+    at C:\projects\The Champions\node_modules\next\dist\compiled\next-server\app-route.runtime.prod.js:6:38417
+    at C:\projects\The Champions\node_modules\next\dist\server\lib\trace\tracer.js:140:36
+    at NoopContextManager.with (C:\projects\The 
+Champions\node_modules\next\dist\compiled\@opentelemetry\api\index.js:1:7062)
+    at ContextAPI.with (C:\projects\The Champions\node_modules\next\dist\compiled\@opentelemetry\api\index.js:1:518)
+    at NoopTracer.startActiveSpan (C:\projects\The 
+Champions\node_modules\next\dist\compiled\@opentelemetry\api\index.js:1:18093)
+    at ProxyTracer.startActiveSpan (C:\projects\The 
+Champions\node_modules\next\dist\compiled\@opentelemetry\api\index.js:1:18854) {
+  description: "Route /api/student/dashboard couldn't be rendered statically because it used `headers`. See more info 
+here: https://nextjs.org/docs/messages/dynamic-server-error",
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+Error fetching teachers: n [Error]: Dynamic server usage: Route /api/admin/teachers couldn't be rendered statically 
+because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+    at l (C:\projects\The Champions\.next\server\chunks\9276.js:1:37220)
+    at d (C:\projects\The Champions\.next\server\chunks\1790.js:25:27870)
+    at s (C:\projects\The Champions\.next\server\chunks\1790.js:25:20859)
+    at c (C:\projects\The Champions\.next\server\app\api\admin\teachers\route.js:1:1259)
+    at C:\projects\The Champions\node_modules\next\dist\compiled\next-server\app-route.runtime.prod.js:6:38417
+    at C:\projects\The Champions\node_modules\next\dist\server\lib\trace\tracer.js:140:36
+    at NoopContextManager.with (C:\projects\The 
+Champions\node_modules\next\dist\compiled\@opentelemetry\api\index.js:1:7062)
+    at ContextAPI.with (C:\projects\The Champions\node_modules\next\dist\compiled\@opentelemetry\api\index.js:1:518)
+    at NoopTracer.startActiveSpan (C:\projects\The 
+Champions\node_modules\next\dist\compiled\@opentelemetry\api\index.js:1:18093)
+    at ProxyTracer.startActiveSpan (C:\projects\The 
+Champions\node_modules\next\dist\compiled\@opentelemetry\api\index.js:1:18854) {
+  description: "Route /api/admin/teachers couldn't be rendered statically because it used `headers`. See more info 
+here: https://nextjs.org/docs/messages/dynamic-server-error",
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+ Ô¿» useSearchParams() should be wrapped in a suspense boundary at page "/auth/signin". Read more: 
+https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout
+    at a (C:\projects\The Champions\.next\server\chunks\1406.js:1:32955)
+    at c (C:\projects\The Champions\.next\server\chunks\1406.js:1:43938)
+    at j (C:\projects\The Champions\.next\server\app\auth\signin\page.js:1:2801)
+    at nj (C:\projects\The Champions\node_modules\next\dist\compiled\next-server\app-page.runtime.prod.js:12:46252)
+    at nM (C:\projects\The Champions\node_modules\next\dist\compiled\next-server\app-page.runtime.prod.js:12:47572)
+    at nL (C:\projects\The Champions\node_modules\next\dist\compiled\next-server\app-page.runtime.prod.js:12:64547)
+    at nI (C:\projects\The Champions\node_modules\next\dist\compiled\next-server\app-page.runtime.prod.js:12:47011)
+    at nM (C:\projects\The Champions\node_modules\next\dist\compiled\next-server\app-page.runtime.prod.js:12:47718)
+    at nM (C:\projects\The Champions\node_modules\next\dist\compiled\next-server\app-page.runtime.prod.js:12:61547)
+    at nL (C:\projects\The Champions\node_modules\next\dist\compiled\next-server\app-page.runtime.prod.js:12:64547)
+
+Error occurred prerendering page "/auth/signin". Read more: https://nextjs.org/docs/messages/prerender-error
+
+   Generating static pages (16/32) 
+   Generating static pages (24/32) 
+ Ô£ô Generating static pages (32/32)
+
+> Export encountered errors on following paths:
+	/auth/signin/page: /auth/signin
