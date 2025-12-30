@@ -21,7 +21,8 @@ export function TeacherSidebar() {
       <nav className="space-y-2">
         {menuItems.map((item) => {
           const Icon = item.icon
-          const isActive = pathname === item.href || pathname.startsWith(item.href + '/')
+          const currentPath = pathname ?? ''
+          const isActive = currentPath === item.href || currentPath.startsWith(item.href + '/')
           
           return (
             <Link

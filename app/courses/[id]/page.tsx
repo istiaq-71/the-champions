@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useParams } from 'next/navigation'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
@@ -42,15 +42,11 @@ export default function CourseDetailPage() {
   const [loading, setLoading] = useState(true)
   const [enrolling, setEnrolling] = useState(false)
 
-  useEffect(() => {
-    if (params.id) {
-      fetchCourse()
-    }
-  }, [params.id])
-
-  const fetchCourse = async () => {
+  const fetchCourse = useCallback(async () => {
     try {
-      const response = await fetch(`/api/courses/${params.id}`)
+      const courseId = params?.id
+      if (!courseId) return
+      const response = await fetch(`/api/courses/${courseId}`)
       if (response.ok) {
         const data = await response.json()
         setCourse(data)
@@ -63,7 +59,13 @@ export default function CourseDetailPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [params?.id])
+
+  useEffect(() => {
+    if (params?.id) {
+      fetchCourse()
+    }
+  }, [params?.id, fetchCourse])
 
   const handleEnroll = async () => {
     if (!session) {
