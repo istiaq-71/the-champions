@@ -3,15 +3,27 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 
+// Mark as dynamic to prevent static prerender attempts during build
+export const dynamic = 'force-dynamic'
+
 export async function GET(req: NextRequest) {
   try {
-    const session = await getServerSession(authOptions)
+    // Guard against missing runtime env during builds (Vercel may not expose runtime vars at build time)
+    if (!process.env.DATABASE_URL || !process.env.NEXTAUTH_SECRET) {
+      console.warn('Missing DATABASE_URL or NEXTAUTH_SECRET during build/runtime')
+      return NextResponse.json({ message: 'Server not configured' }, { status: 503 })
+    }
+
+    let session
+    try {
+      session = await getServerSession(authOptions)
+    } catch (err) {
+      console.error('getServerSession error:', err)
+      return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
+    }
 
     if (!session || session.user.role !== 'ADMIN') {
-      return NextResponse.json(
-        { message: 'Unauthorized' },
-        { status: 401 }
-      )
+      return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
     }
 
     // Get user counts
